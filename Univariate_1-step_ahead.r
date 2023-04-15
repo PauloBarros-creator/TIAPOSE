@@ -1,17 +1,40 @@
 # Adapted from 1-sunspots.R
+# Univariate_1-step_ahead.R time series forecasting example that considers only 1-step ahead forecasts.
 
-# install.packages("openxlsx")
 library(openxlsx)
 library(rminer)
-db=read.xlsx(xlsxFile="~/Desktop/Uminho/2º Semestre/TIAPOSE/TIAPOSE TP1-G12/projeto/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-db <- head(db, - 14) # Remove last 14 lines - too many zeroes
+library(RSNNS) # library with several Neural Network (NN) models, including Elman
+db=read.xlsx(xlsxFile="/home/paulo/Desktop/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+# db <- head(db, - 14) # Remove last 14 lines - too many zeroes
 # notas:
 class(db[,1]) # "Date" - R data type that handles dates
 summary(db)
 
-S = db$STELLA
+#S = db$STELLA
+S = db$BUD
 NPRED=7 # number of predictions - Last 7 days
 srange=diff(range(S)) # compute the range of S
+
+# lets scale the data to [0,1] range, using MAX=250 and MIN=0
+MAX=1500;MIN=0;RANGE=(MAX-MIN)
+SS=(S-MIN)/RANGE
+
+H=holdout(S,ratio=NPRED,mode="order") # time ordered holdout split
+print(H)
+# train:
+lags=7
+DS=CasesSeries(SS,c(1:lags)) # 11 time lags t-1,t-2,t-3,t-4,t-5,t-6,t-7 -> t
+print(summary(DS))
+print("Show TR and TS indexes:")
+N=nrow(DS) # number of D examples
+
+HDS=holdout(DS$y,ratio=NPRED,mode="order")
+
+cat("TR: from",HDS$tr[1]," to ",HDS$tr[length(HDS$tr)],"\n")
+cat("TS: from",HDS$ts[1]," to ",HDS$ts[length(HDS$ts)],"\n")
+
+inputs=DS[,1:lags]
+output=DS[,(lags+1)]
 
 # show S and some statistics:
 print(S)
@@ -185,7 +208,7 @@ mgraph(Y,PCPPLS,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="CPPLS pred
 # ----------//----------//----------//----------//----------
 
 # ----------//----------//----------//----------//----------
-# fit a  (RVM) with training data: 
+# fit a (RVM) with training data: 
 RVM=fit(y~.,D[TR,],model="cppls",search="heuristic")
 
 #1-ahead predictions:
@@ -206,4 +229,35 @@ cat("RRSE:",mmetric(Y,PRVM,metric="RRSE"),"\n")
 # graph: RVM - simple Regression Plot
 print("Graph with MR predictions (1-ahead):")
 mgraph(Y,PRVM,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="RVM predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# elman network: 1 input lag, 2 hidden layers with 5 and 3 hidden nodes, 1 output node:
+EL=elman(inputs[HDS$tr,"lag1"],output[HDS$tr],size=c(5,3),learnFuncParams=c(0.1),maxit=200)
+# show training error convergence:
+#mpause("show EL training error convergence:")
+plotIterativeError(EL)
+
+# target
+Y=S[H$ts] # real observed values
+
+# only 1 input is used, predict wants a data.frame or matrix (10x1):
+tinputs=data.frame(lag1=inputs[TS,"lag1"])
+
+PEL=predict(EL,tinputs)
+# rescale back to original space:
+PEL=(PEL*RANGE)+MIN
+
+# show forecasting measures and graph:
+cat("EL predictions: ")
+cat("MAE:",mmetric(Y,PEL,metric="MAE"),"\n")
+cat("NMAE=",mmetric(Y,PEL,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PEL,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PEL,metric="RRSE"),"\n")
+
+# graph:
+print("Graph with NN predictions (1-ahead):")
+plot(1:length(Y),Y,ylim=c(min(PEL,PNN,Y),max(PEL,PNN,Y)),type="b",col="black")
+lines(PEL,type="b",col="blue",pch=2)
+legend("topright",c("Sunspots","EL"),pch=c(1,2,3,3),col=c("black","blue"))
 # ----------//----------//----------//----------//----------

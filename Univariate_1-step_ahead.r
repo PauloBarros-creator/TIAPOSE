@@ -1,4 +1,4 @@
-# Adapted from 1-sunspots.R
+# Adapted from 1-sunspots.R and 2-sunspots.R
 # Univariate_1-step_ahead.R time series forecasting example that considers only 1-step ahead forecasts.
 
 library(openxlsx)
@@ -160,7 +160,7 @@ mgraph(Y,PMR,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="MR prediction
 # ----------//----------//----------//----------//----------
 
 # ----------//----------//----------//----------//----------
-# fit a  (MARS) with training data: 
+# fit a (MARS) with training data: 
 MARS=fit(y~.,D[TR,],model="mars",search="heuristic")
 
 #1-ahead predictions:
@@ -255,9 +255,7 @@ cat("NMAE=",mmetric(Y,PEL,metric="NMAE",val=srange),"\n")
 cat("RMSE:",mmetric(Y,PEL,metric="RMSE"),"\n")
 cat("RRSE:",mmetric(Y,PEL,metric="RRSE"),"\n")
 
-# graph:
-print("Graph with NN predictions (1-ahead):")
-plot(1:length(Y),Y,ylim=c(min(PEL,PNN,Y),max(PEL,PNN,Y)),type="b",col="black")
-lines(PEL,type="b",col="blue",pch=2)
-legend("topright",c("Sunspots","EL"),pch=c(1,2,3,3),col=c("black","blue"))
+# graph: elman - simple Regression Plot
+print("Graph with elman predictions (1-ahead):")
+mgraph(Y,PEL,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="Elman predictions",leg=list(pos="topright",leg=c("target","predictions")))
 # ----------//----------//----------//----------//----------

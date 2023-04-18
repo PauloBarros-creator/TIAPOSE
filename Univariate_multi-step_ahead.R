@@ -8,7 +8,7 @@ cat("read beer time series:")
 TS=read.xlsx(xlsxFile="/home/paulo/Desktop/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 #TS <- head(TS, - 14) # Remove last 14 lines - too many zeroes
 
-#S = TS$STELLA
+#TS = TS$STELLA
 TS = TS$BUD
 summary(TS)
 K=7 # TS period (weekly!)

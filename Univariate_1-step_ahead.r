@@ -184,6 +184,54 @@ mgraph(Y,PMARS,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="MARS predic
 # ----------//----------//----------//----------//----------
 
 # ----------//----------//----------//----------//----------
+# fit a (PCR) with training data: 
+PCR=fit(y~.,D[TR,],model="pcr",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PPCR=predict(PCR,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("PCR predictions:\n")
+print(PPCR)
+cat("MAE:",mmetric(Y,PPCR,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PPCR,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PPCR,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PPCR,metric="RRSE"),"\n")
+
+# graph: PCR - simple Regression Plot
+print("Graph with MR predictions (1-ahead):")
+mgraph(Y,PPCR,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="PCR predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a (PLSR) with training data: 
+PLSR=fit(y~.,D[TR,],model="plsr",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PPLSR=predict(PLSR,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("PLSR predictions:\n")
+print(PPLSR)
+cat("MAE:",mmetric(Y,PPLSR,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PPLSR,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PPLSR,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PPLSR,metric="RRSE"),"\n")
+
+# graph: PLSR - simple Regression Plot
+print("Graph with MR predictions (1-ahead):")
+mgraph(Y,PPCR,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="PLSR predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
 # fit a  (CPPLS) with training data: 
 CPPLS=fit(y~.,D[TR,],model="cppls",search="heuristic")
 
@@ -379,4 +427,5 @@ cat("RRSE:",mmetric(Y,PRF,metric="RRSE"),"\n")
 print("Graph with RF predictions (1-ahead):")
 mgraph(Y,PRF,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="RF predictions",leg=list(pos="topright",leg=c("target","predictions")))
 # ----------//----------//----------//----------//----------
+
 

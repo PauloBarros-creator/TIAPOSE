@@ -125,7 +125,7 @@ LD=nrow(d) # note: LD < L
 hd=holdout(d$y,ratio=NTS,mode="order")
 
 # ----------//----------//----------//----------//----------
-# linear regression modeling ("lm"), via rminer:
+# linear regression modeling ("mlpe"), via rminer:
 print("model> mlpe (with t-1,t-2,t-3,t-4,t-5,t-6,t-7 -> t lags)")
 NN2=fit(y~.,d[hd$tr,],model="mlpe")
 # multi-step, from 1 to H ahead forecasts:

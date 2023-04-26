@@ -4,7 +4,7 @@
 library(openxlsx)
 library(rminer)
 library(RSNNS) # library with several Neural Network (NN) models, including Elman
-db=read.xlsx(xlsxFile="/home/paulo/Desktop/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+db=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 # db <- head(db, - 14) # Remove last 14 lines - too many zeroes
 # notas:
 class(db[,1]) # "Date" - R data type that handles dates
@@ -259,3 +259,124 @@ cat("RRSE:",mmetric(Y,PEL,metric="RRSE"),"\n")
 print("Graph with elman predictions (1-ahead):")
 mgraph(Y,PEL,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="Elman predictions",leg=list(pos="topright",leg=c("target","predictions")))
 # ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a  (KSVM) with training data: 
+KSVM=fit(y~.,D[TR,],model="ksvm",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PKSVM=predict(KSVM,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("KSVM predictions:\n")
+print(PKSVM)
+cat("MAE:",mmetric(Y,PKSVM,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PKSVM,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PKSVM,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PKSVM,metric="RRSE"),"\n")
+
+# graph: KSVM - simple Regression Plot
+print("Graph with KSVM predictions (1-ahead):")
+mgraph(Y,PKSVM,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="KSVM predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a  (LSSVM) with training data: 
+LSSVM=fit(y~.,D[TR,],model="lssvm",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PLSSVM=predict(LSSVM,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("LSSVM predictions:\n")
+print(PLSSVM)
+cat("MAE:",mmetric(Y,PLSSVM,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PLSSVM,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PLSSVM,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PLSSVM,metric="RRSE"),"\n")
+
+# graph: LSSVM - simple Regression Plot
+print("Graph with LSSVM predictions (1-ahead):")
+mgraph(Y,PLSSVM,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="LSSVM predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a  (MLP) with training data: 
+MLP=fit(y~.,D[TR,],model="mlp",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PMLP=predict(MLP,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("MLP predictions:\n")
+print(PMLP)
+cat("MAE:",mmetric(Y,PMLP,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PMLP,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PMLP,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PMLP,metric="RRSE"),"\n")
+
+# graph: MLP - simple Regression Plot
+print("Graph with MLP predictions (1-ahead):")
+mgraph(Y,PMLP,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="MLP predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a  (MLPE) with training data: 
+MLPE=fit(y~.,D[TR,],model="mlpe",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PMLPE=predict(MLPE,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("MLPE predictions:\n")
+print(PMLPE)
+cat("MAE:",mmetric(Y,PMLPE,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PMLPE,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PMLPE,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PMLPE,metric="RRSE"),"\n")
+
+# graph: MLPE - simple Regression Plot
+print("Graph with MLPE predictions (1-ahead):")
+mgraph(Y,PMLPE,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="MLPE predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+
+# ----------//----------//----------//----------//----------
+# fit a  (RF) with training data: 
+RF=fit(y~.,D[TR,],model="randomForest",search="heuristic")
+
+#1-ahead predictions:
+print("Predictions (1-ahead):")
+PRF=predict(RF,D[TS,])
+
+# store the output target into object Y
+Y=D[TS,]$y # real observed values
+
+# show forecasting measures and graph:
+cat("RF predictions:\n")
+print(PRF)
+cat("MAE:",mmetric(Y,PRF,metric="MAE"),"\n")
+cat("NMAE:",mmetric(Y,PRF,metric="NMAE",val=srange),"\n")
+cat("RMSE:",mmetric(Y,PRF,metric="RMSE"),"\n")
+cat("RRSE:",mmetric(Y,PRF,metric="RRSE"),"\n")
+
+# graph: RF - simple Regression Plot
+print("Graph with RF predictions (1-ahead):")
+mgraph(Y,PRF,graph="REG",Grid=10,lty=1,col=c("black","blue"),main="RF predictions",leg=list(pos="topright",leg=c("target","predictions")))
+# ----------//----------//----------//----------//----------
+

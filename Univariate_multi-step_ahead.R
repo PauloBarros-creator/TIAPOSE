@@ -3,9 +3,10 @@
 
 library(openxlsx)
 library(rminer)
+library(forecast)
 
 cat("read beer time series:")
-TS=read.xlsx(xlsxFile="/home/paulo/Desktop/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+TS=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 #TS <- head(TS, - 14) # Remove last 14 lines - too many zeroes
 
 #TS = TS$STELLA

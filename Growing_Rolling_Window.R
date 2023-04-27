@@ -22,7 +22,7 @@ print("incremental (growing) window training demonstration:")
 
 Test=K # H, the number of multi-ahead steps, adjust if needed
 S=round(K/2) # step jump: set in this case to 2 days
-Runs=8 # number of growing window iterations, adjust if needed
+Runs=20 # number of growing window iterations, adjust if needed
 
 # forecast:
 W=(L-Test)-(Runs-1)*S # initial training window size for the ts space (forecast methods)

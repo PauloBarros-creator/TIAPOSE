@@ -11,7 +11,9 @@ LTS=K #  1 year, used for the forecasting range, thus 4 forecasts
 precip=db[,3] # precipitacao
 temp_max=db[,4]   # max temperatura
 
-hd=holdout(precip,ratio=LTS,mode="order") # simple ordered holdout train and test split, rminer function
+stella=db[,5]
+
+hd=holdout(stella,ratio=LTS,mode="order") # simple ordered holdout train and test split, rminer function
 
 cdata=cbind(precip,temp_max)
 mtr=ts(cdata[hd$tr,],frequency=K) # TS training object, uses forecast library mode!
@@ -140,4 +142,4 @@ for(i in 1:LTS)
   }
 }
 
-fshow(Y,Pred31,Pred32,"2MLP","prod","rw")
+fshow(Y,Pred31,Pred32,"2MLP","precip","temp_max")

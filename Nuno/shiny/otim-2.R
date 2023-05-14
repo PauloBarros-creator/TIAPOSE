@@ -1,3 +1,38 @@
+#with help from ChatGPT
+
+sales_pred1 <- 0
+sales_pred2 <- 0
+
+library(dplyr)
+# assume your dataset is named "my_data" and has a date column named "date"
+db <- db %>%
+  mutate(week = (as.numeric(format(DATA, "%U")) - as.numeric(format(min(DATA), "%U"))) %% 52 + 1) %>%
+  select(week, everything())
+
+choose_year <- function(year_num, semana_escolhida) {
+  
+  # select rows that correspond to the selected year
+  my_year_data <- subset(db, format(DATA, "%Y") == year_num)
+  
+  # subset the data for the selected week and convert to list
+  week_data <- subset(my_year_data, week == semana_escolhida)
+  week_list <- as.list(week_data)
+  
+  # create vectors for all columns
+  my_week_vecs <- lapply(week_list, unlist)
+  
+  
+  #print(my_week_vecs)
+  sales_pred1 <- my_week_vecs$STELLA
+  sales_pred2 <- my_week_vecs$BUD
+  
+  # cat("   Vendas previstas de STELLA: ",sales_pred1,"\n")
+  # cat("   Vendas previstas de BUD: ",sales_pred2,"\n")
+  
+  return(c(sales_pred1,sales_pred2))
+  
+}
+
 # Made in very small collaboration with ChatGPT
 # duvidas (ver imagem):
 #   para queservem os "valores estimados para venda"
@@ -19,9 +54,6 @@ custo_arm <- 10
 custo_v1 <- 40
 custo_v2 <- 50
 custo_v3 <- 53
-
-sales_pred1 <- c(141, 154, 18, 102, 211, 69, 37, 0)
-sales_pred2 <- c(211, 172, 220,330, 39, 45, 125, 0)
 
 soma_arm <- 0
 soma_v1 <- 0
@@ -89,13 +121,15 @@ eval <- function(s) {
   s <- repair(s)
   
   # splitting code by chatgpt
-  split_s <- split(s, rep(1:6, each = 7))
+  split_s <- split(s, rep(1:8, each = 7))
   preparadas1 <- split_s[[1]]
   preparadas2 <- split_s[[2]]
   arm <- split_s[[3]]
   v1 <- split_s[[4]]
   v2 <- split_s[[5]]
   v3 <- split_s[[6]]
+  sales_pred1 <- split_s[[7]]
+  sales_pred2 <- split_s[[8]]
   
   # Initialize variables
   profit1 <- 0
@@ -185,23 +219,5 @@ eval <- function(s) {
   
   cat("Recursos:  ", resources, "\n")
   
-  return(total_profit)
+  #return(total_profit)
 }
-
-# Usage:
-
-preparadas1 <- c(160, 8, 0, 52, 20, 0, 0)
-preparadas2 <- c(200, 200, 0, 0, 30, 0, 0)
-
-
-arm <- c(6, 3, 0, 1, 1, 0, 1)
-
-#arm <- c(1, 1, 0, 1, 1, 0, 1)
-
-v1 <- c(2, 0, 0, 1, 0, 0, 0)
-v2 <- c(2, 1, 0, 0, 1, 0, 0)
-v3 <- c(2, 1, 0, 0, 0, 0, 0)
-
-s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
-
-eval(s)

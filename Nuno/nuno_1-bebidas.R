@@ -2,7 +2,7 @@
 
 # install.packages("openxlsx")
 library(openxlsx)
-db=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+db=read.xlsx(xlsxFile="../../bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 db <- head(db, - 14) # Remove last 14 lines - too many zeroes
 # notas:
 class(db[,1]) # "Date" - R data type that handles dates

@@ -28,8 +28,8 @@ choose_year <- function(year_num, semana_escolhida) {
   
   # cat("   Vendas previstas de STELLA: ",sales_pred1,"\n")
   # cat("   Vendas previstas de BUD: ",sales_pred2,"\n")
-  
-  return(c(sales_pred1,sales_pred2))
+  result <- c(sales_pred1,sales_pred2)
+  return(result)
   
 }
 
@@ -116,10 +116,6 @@ repair <- function(s) {
 
 # Define function to calculate profit
 eval <- function(s) {
-  
-  # Repair proposed solution
-  s <- repair(s)
-  
   # splitting code by chatgpt
   split_s <- split(s, rep(1:8, each = 7))
   preparadas1 <- split_s[[1]]
@@ -130,6 +126,10 @@ eval <- function(s) {
   v3 <- split_s[[6]]
   sales_pred1 <- split_s[[7]]
   sales_pred2 <- split_s[[8]]
+  
+  s <- s [1:42]
+  # Repair proposed solution
+  s <- repair(s)
   
   # Initialize variables
   profit1 <- 0
@@ -202,17 +202,21 @@ eval <- function(s) {
   resources <- sum(arm) + sum(v1) + sum(v2) + sum(v3)
   
   # resposta:
-  cat("Valores estimados para venda: \n stella: ",sales_pred1,"\n    bud: ",sales_pred2,"\n")
-  cat("    arm.: ",arm," > custo: ",soma_arm,
-      "\n     v1: ",v1,
-      "\n     v2: ",v2,
-      "\n     v3: ",v3,
-      "\ncusto veiculos: ",soma_v1+soma_v2+soma_v3,"\n")
-  cat("bebidas empacotadas e distribuidas: \n  stella: ",preparadas1,"\n     bud: ",preparadas2,"\n")
-  cat("- vendas stella:",head(actual_sales1,-1)," > lucro: ",profit1,
-      "\n-    vendas bud:",head(actual_sales2,-1)," > lucro: ",profit2)
-  cat("\n-  stock stella:",tail(stock1,-1)," > custo: ",sum(stock1),
-      "\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n")
+  cat("Valores estimados para venda: \n")
+  cat(" stella: ",sales_pred1,"\n")
+  cat("    bud: ",sales_pred2,"\n")
+  cat("    arm.: ",arm," > custo: ",soma_arm)
+  cat("\n     v1: ",v1)
+  cat("\n     v2: ",v2)
+  cat("\n     v3: ",v3)
+  cat("\ncusto veiculos: ",soma_v1+soma_v2+soma_v3,"\n")
+  cat("bebidas empacotadas e distribuidas: \n")
+  cat("  stella: ",preparadas1,"\n")
+  cat("     bud: ",preparadas2,"\n")
+  cat("- vendas stella:",head(actual_sales1,-1)," > lucro: ",profit1)
+  cat("\n-    vendas bud:",head(actual_sales2,-1)," > lucro: ",profit2)
+  cat("\n-  stock stella:",tail(stock1,-1)," > custo: ",sum(stock1))
+  cat("\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n")
   
   
   cat("Lucro Final: R$", total_profit, "\n")

@@ -9,13 +9,15 @@
 #sp <- 0
 
 library(shiny)
+source("otim-2.R")
 source('ui.R', local = TRUE)
 source('server.R')
 
 
-# Run the application 
 shinyApp(
   ui = my_ui,
   server = my_server
 )
 
+# Run the application 
+shinyApp(ui = ui, server = server)

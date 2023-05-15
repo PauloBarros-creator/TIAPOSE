@@ -1,8 +1,3 @@
-#with help from ChatGPT
-
-sales_pred1 <- 0
-sales_pred2 <- 0
-
 # Made in very small collaboration with ChatGPT
 # duvidas (ver imagem):
 #   para queservem os "valores estimados para venda"
@@ -24,6 +19,9 @@ custo_arm <- 10
 custo_v1 <- 40
 custo_v2 <- 50
 custo_v3 <- 53
+
+sales_pred1 <- c(141, 154, 18, 102, 211, 69, 37, 0)
+sales_pred2 <- c(211, 172, 220,330, 39, 45, 125, 0)
 
 soma_arm <- 0
 soma_v1 <- 0
@@ -86,20 +84,18 @@ repair <- function(s) {
 
 # Define function to calculate profit
 eval <- function(s) {
+  
+  # Repair proposed solution
+  s <- repair(s)
+  
   # splitting code by chatgpt
-  split_s <- split(s, rep(1:8, each = 7))
+  split_s <- split(s, rep(1:6, each = 7))
   preparadas1 <- split_s[[1]]
   preparadas2 <- split_s[[2]]
   arm <- split_s[[3]]
   v1 <- split_s[[4]]
   v2 <- split_s[[5]]
   v3 <- split_s[[6]]
-  sales_pred1 <- split_s[[7]]
-  sales_pred2 <- split_s[[8]]
-  
-  s <- s [1:42]
-  # Repair proposed solution
-  s <- repair(s)
   
   # Initialize variables
   profit1 <- 0
@@ -172,21 +168,17 @@ eval <- function(s) {
   resources <- sum(arm) + sum(v1) + sum(v2) + sum(v3)
   
   # resposta:
-  cat("Valores estimados para venda: \n")
-  cat(" stella: ",sales_pred1,"\n")
-  cat("    bud: ",sales_pred2,"\n")
-  cat("    arm.: ",arm," > custo: ",soma_arm)
-  cat("\n     v1: ",v1)
-  cat("\n     v2: ",v2)
-  cat("\n     v3: ",v3)
-  cat("\ncusto veiculos: ",soma_v1+soma_v2+soma_v3,"\n")
-  cat("bebidas empacotadas e distribuidas: \n")
-  cat("  stella: ",preparadas1,"\n")
-  cat("     bud: ",preparadas2,"\n")
-  cat("- vendas stella:",head(actual_sales1,-1)," > lucro: ",profit1)
-  cat("\n-    vendas bud:",head(actual_sales2,-1)," > lucro: ",profit2)
-  cat("\n-  stock stella:",tail(stock1,-1)," > custo: ",sum(stock1))
-  cat("\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n")
+  cat("Valores estimados para venda: \n stella: ",sales_pred1,"\n    bud: ",sales_pred2,"\n")
+  cat("    arm.: ",arm," > custo: ",soma_arm,
+      "\n     v1: ",v1,
+      "\n     v2: ",v2,
+      "\n     v3: ",v3,
+      "\ncusto veiculos: ",soma_v1+soma_v2+soma_v3,"\n")
+  cat("bebidas empacotadas e distribuidas: \n  stella: ",preparadas1,"\n     bud: ",preparadas2,"\n")
+  cat("- vendas stella:",head(actual_sales1,-1)," > lucro: ",profit1,
+      "\n-    vendas bud:",head(actual_sales2,-1)," > lucro: ",profit2)
+  cat("\n-  stock stella:",tail(stock1,-1)," > custo: ",sum(stock1),
+      "\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n")
   
   
   cat("Lucro Final: R$", total_profit, "\n")
@@ -195,3 +187,19 @@ eval <- function(s) {
   
   #return(total_profit)
 }
+
+# Usage:
+
+# preparadas1 <- c(160, 8, 0, 52, 20, 0, 0)
+# preparadas2 <- c(200, 200, 0, 0, 30, 0, 0)
+# 
+# 
+# arm <- c(6, 3, 0, 1, 1, 0, 1)
+# 
+# v1 <- c(2, 0, 0, 1, 0, 0, 0)
+# v2 <- c(2, 1, 0, 0, 1, 0, 0)
+# v3 <- c(2, 1, 0, 0, 0, 0, 0)
+# 
+# s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
+# 
+# eval(s)

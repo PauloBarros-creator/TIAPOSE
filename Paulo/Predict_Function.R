@@ -89,9 +89,9 @@ predict_ksvm_bud <- function() {
   return(Pred)
 }
 #cat("Predict Stella:")
-print(predict_ksvm_stella())
+#print(predict_ksvm_stella())
 #cat("Predict Bud:")
-print(predict_ksvm_bud())
+#print(predict_ksvm_bud())
 
 #variaveis globais
 

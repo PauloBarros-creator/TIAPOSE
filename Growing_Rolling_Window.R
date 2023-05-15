@@ -8,7 +8,7 @@ library(openxlsx)
 
 # read data:
 cat("read beer time series:")
-d1=read.xlsx(xlsxFile="/home/paulo/Desktop/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 d1 <- head(d1, - 14) # Remove last 14 lines - too many zeroes
 
 d1 = d1$STELLA

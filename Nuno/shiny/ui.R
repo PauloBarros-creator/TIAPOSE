@@ -1,3 +1,9 @@
+# interface simples e semelhante a html.
+# cada tabPanel é uma página
+# sidebarLayout define o layout com sidebar que estamos a usar 
+# sidebarPanel inclui todos os paineis de input
+# mainPanel inclui todos os paineis de output
+
 my_ui <- fluidPage(
   navbarPage("TP1-G12",
     tabPanel("Previsão + Otimização",

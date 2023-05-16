@@ -17,7 +17,6 @@ predict_ksvm_stella <- function() {
   
   Test=K # H, the number of multi-ahead steps, adjust if needed
   S=round(K/3) # step jump: set in this case to 2 days
-  print(S)
   Runs=20 # number of growing window iterations, adjust if needed
   
   # forecast:
@@ -43,8 +42,7 @@ predict_ksvm_stella <- function() {
     Pred=lforecast(M,D,start=(length(H$tr)+1),Test) # multi-step ahead forecasts
     #ev15[b]=mmetric(y=d1[H$ts],x=Pred,metric="NMAE",val=YR)
   }
-  print(Pred)
-  return(Pred)
+  return(floor(Pred))
 }
 
 predict_ksvm_bud <- function() {
@@ -59,7 +57,6 @@ predict_ksvm_bud <- function() {
   
   Test=K # H, the number of multi-ahead steps, adjust if needed
   S=round(K/3) # step jump: set in this case to 2 days
-  print(S)
   Runs=20 # number of growing window iterations, adjust if needed
   
   # forecast:
@@ -85,8 +82,7 @@ predict_ksvm_bud <- function() {
     Pred=lforecast(M,D,start=(length(H$tr)+1),Test) # multi-step ahead forecasts
     #ev15[b]=mmetric(y=d1[H$ts],x=Pred,metric="NMAE",val=YR)
   }
-  print(Pred)
-  return(Pred)
+  return(floor(Pred))
 }
 #cat("Predict Stella:")
 #print(predict_ksvm_stella())

@@ -373,7 +373,7 @@ lines(PredR4,pch=19,cex=0.5,type="b",col="purple")
 lines(PredR5,pch=19,cex=0.5,type="b",col="brown")
 
 # rolling window to rminer models:
-for(b in 1:Runs)  # cycle of the incremental window training (growing window)
+for(b in 1:Runs)  # cycle of the incremental window training (rolling window)
 {
   H=holdout(D$y,ratio=Test,mode="incremental",iter=b,window=W2,increment=S)   
   

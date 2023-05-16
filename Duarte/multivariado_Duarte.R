@@ -16,14 +16,14 @@ K=7 # seasonal frequency: 4 time periods per year
 LTS=K #  1 year, used for the forecasting range, thus 4 forecasts
  
  prod=Canada[,3] # productivity (precipitação)
- rw=Canada[,5]   # real wage (temperatura maxima), stella
+ rw=Canada[,2]   # real wage (temperatura maxima), stella
  
- #targ=Canada[,5]
+ targ=Canada[,5]
 
 # prod = Canada$DIA_SEMANA
 # rw=Canada$PRECIPITACAO
 
-hd=holdout(prod,ratio=LTS,mode="order") # simple ordered holdout train and test split, rminer function
+hd=holdout(targ,ratio=LTS,mode="order") # simple ordered holdout train and test split, rminer function
 
 cdata=cbind(prod,rw)
 #cdata2=cbind(targ)

@@ -8,6 +8,8 @@
 #     SEJAM 
 #      1 = stella
 #      2 = bud
+source("blind.R") # fsearch is defined here
+source("montecarlo.R") # mcsearch is defined here
 
 #variaveis globais
 
@@ -30,6 +32,7 @@ soma_v3 <- 0
 
 # Function to repair solution
 repair <- function(s) {
+  
   # splitting code by chatgpt
   split_s <- split(s, rep(1:6, each = 7))
   preparadas1 <- split_s[[1]]
@@ -40,8 +43,8 @@ repair <- function(s) {
   v3 <- split_s[[6]]
   
   # calculo dos maximos
-  max_arm <- arm*72
-  max_v <- v1*60 + v2*90 + v3*120
+  max_arm <- arm * 72
+  max_v <- v1 * 60 + v2 * 90 + v3 * 120
   
   #iniciacao das variaveis
   total_p <- preparadas1 + preparadas2
@@ -52,34 +55,32 @@ repair <- function(s) {
   
   # verificacao
   for (i in 1:7) {
-    
     # arm
-    if (0 <= total_p[i] && max_arm[i] >= total_p[i]) {
+    if (!is.na(total_p[i]) && !is.na(max_arm[i]) && 0 <= total_p[i] && max_arm[i] >= total_p[i]) {
       p1_a[i] <- p1_a[i]
       p2_a[i] <- p2_a[i]
     } else {
-      cat("AVISO: Plano com valor ilegal encontrado nos recursos de armazém, no dia ",i,"- A resolver...\n")
+      cat("AVISO: Plano com valor ilegal encontrado nos recursos de armazém, no dia ", i, "- A resolver...\n")
       p1_a[i] <- max_arm[i] / 2
       p2_a[i] <- max_arm[i] / 2
     }
     
     # v
-    if (0 <= total_p[i] && max_v[i] >= total_p[i]) {
+    if (!is.na(total_p[i]) && !is.na(max_v[i]) && 0 <= total_p[i] && max_v[i] >= total_p[i]) {
       p1_v[i] <- p1_v[i]
       p2_v[i] <- p2_v[i]
     } else {
-      cat("AVISO: Plano com valor ilegal encontrado nos recursos de distribuição, no dia ",i,"- A resolver...\n")
+      cat("AVISO: Plano com valor ilegal encontrado nos recursos de distribuição, no dia ", i, "- A resolver...\n")
       p1_v[i] <- max_v[i] / 2
       p2_v[i] <- max_v[i] / 2
     }
-    
   }
   
   # cria o vetor final com o minimo de cada elemento. de maneira a respeitar semrpe as duas
-  p1_f <- pmin(p1_a,p1_v)
-  p2_f <- pmin(p2_a,p2_v)
+  p1_f <- pmin(p1_a, p1_v)
+  p2_f <- pmin(p2_a, p2_v)
   
-  return (c(p1_f,p2_f,arm,v1,v2,v3))
+  return(c(p1_f, p2_f, arm, v1, v2, v3))
 }
 
 # Define function to calculate profit
@@ -120,9 +121,9 @@ eval <- function(s) {
     
     # STELLA ------------------
     # Calculate actual sales
-    if (disponivel1 <= sales_pred1[i]) {
+    if (!is.na(disponivel1) && !is.na(sales_pred1[i]) && disponivel1 <= sales_pred1[i]) {
       actual_sales1[i] <- disponivel1
-    } else {
+    } else if (!is.na(disponivel1) && !is.na(sales_pred1[i])) {
       actual_sales1[i] <- sales_pred1[i]
       stock1[i+1] <- disponivel1 - sales_pred1[i]
     }
@@ -132,9 +133,9 @@ eval <- function(s) {
     
     # BUD ---------------------
     # Calculate actual sales
-    if (disponivel2 <= sales_pred2[i]) {
+    if (!is.na(disponivel2) && !is.na(sales_pred2[i]) && disponivel2 <= sales_pred2[i]) {
       actual_sales2[i] <- disponivel2
-    } else {
+    } else if (!is.na(disponivel2) && !is.na(sales_pred2[i])) {
       actual_sales2[i] <- sales_pred2[i]
       stock2[i+1] <- disponivel2 - sales_pred2[i]
     }
@@ -154,7 +155,7 @@ eval <- function(s) {
       soma_v1 <<- soma_v1 + v1[i] * (custo_v1+5)
       soma_v2 <<- soma_v2 + v2[i] * (custo_v2+5)
       soma_v3 <<- soma_v3 + v3[i] * (custo_v3+5)
-    }else{
+    } else {
       soma_arm <<- soma_arm + arm[i] * custo_arm
       soma_v1 <<- soma_v1 + v1[i] * custo_v1
       soma_v2 <<- soma_v2 + v2[i] * custo_v2
@@ -204,4 +205,25 @@ v3 <- c(2, 1, 0, 0, 0, 0, 0)
 
 s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
 
+# Removendo valores ausentes e substituindo por zeros
+sales_pred1 <- sales_pred1[!is.na(sales_pred1)]
+sales_pred2 <- sales_pred2[!is.na(sales_pred2)]
+sales_pred1[is.na(sales_pred1)] <- 0
+sales_pred2[is.na(sales_pred2)] <- 0
+
 eval(s)
+
+# dimension
+D=20
+
+# evaluation function:
+sphere=function(s) {
+  return(eval(s))  
+}
+
+N=100000 # number of searches
+# monte carlo search with D=2 and x in [-10.4,10.4]
+lower=rep(-10.4,D) # lower bounds
+upper=rep(10.4,D) #  upper bounds
+MC=mcsearch(fn=sphere,lower=lower,upper=upper,N=N,type="min")
+cat("best solution:",MC$sol,"evaluation function",MC$eval," (found at iteration:",MC$index,")\n")

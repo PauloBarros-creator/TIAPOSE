@@ -1,5 +1,10 @@
-source("otim-2.R")
+source("eval-print.R")
 source("predict.R")
+
+# para cada output existem 3 funcoes:
+#   funcao principal, que define os calculos a serem apresentados (ex.: predict, plano)
+#   funcao renderText/renderPrint, que está associada ao campo em que será apresentado o output e simplesmente o conecta à função eventReactive
+#   funcao eventReactive, que aguarda que seja premido um botao (primeiro argumento) para executar a funcao principal.
 
 my_server <- function(input, output) {
   
@@ -7,49 +12,60 @@ my_server <- function(input, output) {
   sp1 <- c()
   sp2 <- c()
   
+  # PREVISAO
   predict <- function(model) {
     cat("Predicting with model ",model)
     sp1 <<- predict_ksvm_stella()
     sp2 <<- predict_ksvm_bud()
-    texto <- paste("   Vendas previstas de STELLA: ",paste(sprintf("%.2f", sp1), collapse = ","),"\n   Vendas previstas de BUD: ",paste(sprintf("%.2f", sp2), collapse = ","),"\n")
+    texto <- paste("   Vendas previstas de STELLA: ",paste(sprintf("%.2f", sp1), collapse = " ; "),"\n   Vendas previstas de BUD: ",paste(sprintf("%.2f", sp2), collapse = " ; "),"\n")
     return(texto)
   }
   
-  plano <- function(week,year) {
-    # nao funciona
-    # p1 <- as.numeric(strsplit(input$p1, ",")[[1]])
-    # p2 <- as.numeric(strsplit(input$p2, ",")[[1]])
-    # arm <- as.numeric(strsplit(input$arm, ",")[[1]])
-    # v1 <- as.numeric(strsplit(input$v1, ",")[[1]])
-    # v2 <- as.numeric(strsplit(input$v2, ",")[[1]])
-    # v3 <- as.numeric(strsplit(input$v3, ",")[[1]])
-    p1 <- c(160, 8, 0, 52, 20, 0, 0)
-    p2 <- c(200, 200, 0, 0, 30, 0, 0)
-    arm <- c(6, 3, 0, 1, 1, 0, 1)
-    v1 <- c(2, 0, 0, 1, 0, 0, 0)
-    v2 <- c(2, 1, 0, 0, 1, 0, 0)
-    v3 <- c(2, 1, 0, 0, 0, 0, 0)
+  # print da previsao obtida
+  result <- eventReactive(input$choosePred, {
+    predict(input$model)
+  })
+  
+  output$output_previsao <- renderText({
+    result()
+  })
+  
+  
+  # PLANO INICIAL
+  plano <- function() {
+    p1 <- as.numeric(unlist(strsplit(input$p1,",")))
+    p1 <- as.numeric(unlist(strsplit(input$p1, ",")))
+    p2 <- as.numeric(unlist(strsplit(input$p2, ",")))
+    arm <- as.numeric(unlist(strsplit(input$arm, ",")))
+    v1 <- as.numeric(unlist(strsplit(input$v1, ",")))
+    v2 <- as.numeric(unlist(strsplit(input$v2, ",")))
+    v3 <- as.numeric(unlist(strsplit(input$v3, ",")))
     
     s <- c(p1,p2,arm,v1,v2,v3,sp1,sp2)
     eval(s)
   }
   
-  # print do modelo
-  result <- eventReactive(input$chooseModel, {
-    predict(input$model)
+  # print do plano
+  result_plano <- eventReactive(input$choosePlan, {
+    plano()
   })
   
-  output$output <- renderText({
-    result()
+  output$output_plano <- renderPrint({
+    result_plano()
   })
   
-  # print da previsao
-  result_f <- eventReactive(input$execute, {
-    capture.output(plano(input$week, input$year))
+  # OTIMIZACAO
+  otimi <- function() {
+    return(cat("not yet :)"))
+  }
+  
+  # print da otimizacao
+  result_otim <- eventReactive(input$chooseOtim, {
+    otimi()
   })
   
-  output$output_f <- renderPrint({
-    result_f()
+  output$output_otim <- renderPrint({
+    result_otim()
   })
   
 }

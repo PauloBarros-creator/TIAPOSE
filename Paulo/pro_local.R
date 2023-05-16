@@ -53,7 +53,7 @@ sann <- function(){
   cat("Hill Climbingg (example with",Runs,"different seeds/runs): \n")
   
   best= -Inf # - infinity
-  s0 =c(rep(sample(0:max_previsto_stella, Runs),6),rep(sample(0:max_previsto_bud, Runs),7),rep(sample(0:72, Runs),7),rep(sample(0:60, Runs),7),rep(sample(0:90, Runs),7),rep(sample(0:120, Runs),7)) # one extreme point, could be a random point
+  s0 =c(rep(sample(0:max_previsto_stella, Runs),7),rep(sample(0:max_previsto_bud, Runs),7),rep(sample(0:72, Runs),7),rep(sample(0:60, Runs),7),rep(sample(0:90, Runs),7),rep(sample(0:120, Runs),7)) # one extreme point, could be a random point
   s0 = matrix(c(rep(sample(0:max_previsto_stella, Runs),6),rep(sample(0:max_previsto_bud, Runs),7),rep(sample(0:72, Runs),7),rep(sample(0:60, Runs),7),rep(sample(0:90, Runs),7),rep(sample(0:120, Runs),7)), nrow=70, ncol=10) # one extreme point, could be a random point
   print(s0) 
   print(c(s0[142]))

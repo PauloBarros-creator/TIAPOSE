@@ -1,16 +1,5 @@
-# Made in very small collaboration with ChatGPT
-# duvidas (ver imagem):
-#   para queservem os "valores estimados para venda"
-#   por "elementos do plano" entende-se inputs do utilizador?
-#   custo veiculos dá-me 489...
-#   os arm e veiculos nao impactam o numero de bebidas disponiveis
-
-#     SEJAM 
-#      1 = stella
-#      2 = bud
-source("blind.R") # fsearch is defined here
-source("montecarlo.R") # mcsearch is defined here
-
+library(DEoptim)
+library(pso)
 #variaveis globais
 
 ganho1 <- 5.7
@@ -213,22 +202,37 @@ sales_pred2[is.na(sales_pred2)] <- 0
 
 eval(s)
 
-
-D=42
-
-# evaluation function:
-sphere=function(s) {
-  return(eval(s))
-}
-
-N=1000 # number of searches
-# monte carlo search with D=2 and x in [-10.4,10.4]
 lower=rep(0,D) # lower bounds
 upper=c(rep(211,7),rep(211,7),rep(72,7),rep(60,7),rep(90,7),rep(120,7))
-MC=mcsearch(fn=sphere,lower=lower,upper=upper,N=N,type="max")
-cat("best solution:",MC$sol,"\n")
-cat("evaluation function",MC$eval,"\n")
+
+# Função de avaliação
+eval_fn <- function(s) {
+  eval(s)
+}
+
+# Execução do algoritmo DE
+result_de <- DEoptim(eval_fn, lower = lower, upper = upper)
+
+# Melhor solução encontrada pelo DE
+best_solution_de <- result_de$optim$bestmem
+
+# Avaliação da melhor solução
+best_profit_de <- eval_fn(best_solution_de)
+
+# Execução do algoritmo PSO
+result_pso <- psoptim(lower = lower, upper = upper, fn = eval_fn, control = list(trace = FALSE), par = s)
+
+# Melhor solução encontrada pelo PSO
+best_solution_pso <- result_pso$par
+
+# Avaliação da melhor solução
+best_profit_pso <- eval_fn(best_solution_pso)
 
 
+# Resultados DE
+cat("Melhor solução encontrada: ", best_solution_de, "\n")
+cat("Lucro da melhor solução: R$", best_profit_de, "\n")
 
-
+# Resultados pso 
+cat("Melhor solução encontrada: ", best_solution_pso, "\n")
+cat("Lucro da melhor solução: R$", best_profit_pso, "\n")

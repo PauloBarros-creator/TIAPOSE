@@ -19,5 +19,8 @@ getUpperLimit <- function(prev) {
   max_v2 <- ceiling(max_total/90)
   max_v3 <- ceiling(max_total/120)
   
+  # concatenar tudo
   upperLimit <- c(max_p1, max_p2, max_arm, max_v1, max_v2, max_v3)
+  
+  return (upperLimit)
 }

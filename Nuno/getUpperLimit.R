@@ -4,7 +4,7 @@ getUpperLimit <- function(prev) {
   alpha <- 2
   
   # divisao do argumento input - e definicao do maximo das preparadas
-  split_prev <- split(s, rep(1:2, each = 7))
+  split_prev <- split(prev, rep(1:2, each = 7))
   max_p1 <- alpha * split_prev[[1]]
   max_p2 <- alpha * split_prev[[2]]
   

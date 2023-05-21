@@ -1,4 +1,7 @@
+source("repair.R")
+
 # Define function to calculate profit
+
 eval <- function(s) {
   
   #variaveis globais

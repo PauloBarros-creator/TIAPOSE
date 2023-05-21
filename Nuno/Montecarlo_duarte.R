@@ -10,6 +10,7 @@
 #      2 = bud
 source("blind.R") # fsearch is defined here
 source("montecarlo.R") # mcsearch is defined here
+source("getUpperLimit.R")
 
 #variaveis globais
 
@@ -224,7 +225,7 @@ sphere=function(s) {
 N=1000 # number of searches
 # monte carlo search with D=2 and x in [-10.4,10.4]
 lower=rep(0,D) # lower bounds
-upper=c(rep(211,7),rep(211,7),rep(72,7),rep(60,7),rep(90,7),rep(120,7))
+upper=getUpperLimit(c(sales_pred1))
 MC=mcsearch(fn=sphere,lower=lower,upper=upper,N=N,type="max")
 cat("best solution:",MC$sol,"\n")
 cat("evaluation function",MC$eval,"\n")

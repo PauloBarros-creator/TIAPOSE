@@ -7,8 +7,8 @@ library(openxlsx)
 predict_ksvm_stella <- function() {
   
   # read data:
-  #d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-  d1=db
+  d1=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+  #d1=db
   
   d1 = d1$STELLA
   d1 <- head(d1, - 14) # Remove last 14 lines - too many zeroes
@@ -51,8 +51,8 @@ predict_ksvm_stella <- function() {
 predict_ksvm_bud <- function() {
   
   # read data:
-  #d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-  d1=db
+  d1=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+  #d1=db
   
   d1 = d1$BUD
   

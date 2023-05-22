@@ -5,6 +5,34 @@ source("C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/Paul
 N=6000 # searches
 REPORT=N/20 # report results
 
+getUpperLimit <- function(prev) {
+  
+  # constante a multiplicar pelos valores previstos para definir o limite superior do espaço de otimização
+  alpha <- 2
+  
+  # divisao do argumento input - e definicao do maximo das preparadas
+  split_prev <- split(prev, rep(1:2, each = 7))
+  max_p1 <- alpha * split_prev[[1]]
+  max_p2 <- alpha * split_prev[[2]]
+  
+  # total de bebidas preparadas por dia
+  max_total <- max_p1 + max_p2
+  
+  # recursos de armazenamento necessarios para satisfazer os maximos de bebidas - inteiro acima
+  max_arm <- ceiling(max_total/72)
+  
+  # igual para os recursos de ditribuição
+  max_v1 <- ceiling(max_total/60)
+  max_v2 <- ceiling(max_total/90)
+  max_v3 <- ceiling(max_total/120)
+  
+  # concatenar tudo
+  upperLimit <- c(max_p1, max_p2, max_arm, max_v1, max_v2, max_v3)
+  
+  return (upperLimit)
+}
+
+
 #set.seed(125)
 # slight change of a real par under a normal u(0,0.5) function:
 rchange1=function(par,lower,upper) # change for hclimbing
@@ -14,16 +42,17 @@ rchange1=function(par,lower,upper) # change for hclimbing
 rchange2=function(par) # change for hclimbing
 { hchange(par,lower=lower,upper=upper,rnorm,mean=0,sd=0.5,round=TRUE) }
 
-max_previsto_stella = max(predict_ksvm_stella())
-max_previsto_bud = max(predict_ksvm_stella())
+prev=c(predict_ksvm_stella(),predict_ksvm_bud())
+print(prev)
 
 D=42 # dimension
 lower=rep(0,D) # lower bounds
-upper=c(rep(2*max_previsto_stella,7),rep(2*max_previsto_bud,7),rep(72,7),rep(60,7),rep(90,7),rep(120,7)) #  upper bounds
+upper=getUpperLimit(prev) #  upper bounds
+print(upper)
 
 eval1=function(s) return(-eval(s))
-s0=c(rep(sample(0:max_previsto_stella +max_previsto_stella*0.5, 1),7),rep(sample(0:max_previsto_bud + max_previsto_bud*0.5,1),7),rep(sample(0:72, 1),7),rep(sample(0:60, 1),7),rep(sample(0:90, 1),7),rep(sample(0:120, 1),7)) # one extreme point, could be a random point
-print(s0)
+
+s0=c(rep(0,7)) # one extreme point, could be a random point
 
 hill <- function() {
   # hill climbing:

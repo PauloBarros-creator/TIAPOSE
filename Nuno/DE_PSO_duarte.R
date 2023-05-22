@@ -219,6 +219,8 @@ best_solution_de <- result_de$optim$bestmem
 # Avaliação da melhor solução
 best_profit_de <- eval_fn(best_solution_de)
 
+#------------------------------------------------------------------------------------------
+
 # Execução do algoritmo PSO
 result_pso <- psoptim(lower = lower, upper = upper, fn = eval_fn, control = list(trace = FALSE), par = s)
 

@@ -1,7 +1,4 @@
-source("repair.R")
-
 # Define function to calculate profit
-
 eval <- function(s) {
   
   #variaveis globais
@@ -181,15 +178,15 @@ printeval <- function(s) {
     
     # Custos cumulativos - fim de semana hardcoded
     if (i == 2 || i == 3) {
-      soma_arm <<- soma_arm + arm[i] * (custo_arm+5)
-      soma_v1 <<- soma_v1 + v1[i] * (custo_v1+5)
-      soma_v2 <<- soma_v2 + v2[i] * (custo_v2+5)
-      soma_v3 <<- soma_v3 + v3[i] * (custo_v3+5)
+      soma_arm <- soma_arm + arm[i] * (custo_arm+5)
+      soma_v1 <- soma_v1 + v1[i] * (custo_v1+5)
+      soma_v2 <- soma_v2 + v2[i] * (custo_v2+5)
+      soma_v3 <- soma_v3 + v3[i] * (custo_v3+5)
     }else{
-      soma_arm <<- soma_arm + arm[i] * custo_arm
-      soma_v1 <<- soma_v1 + v1[i] * custo_v1
-      soma_v2 <<- soma_v2 + v2[i] * custo_v2
-      soma_v3 <<- soma_v3 + v3[i] * custo_v3
+      soma_arm <- soma_arm + arm[i] * custo_arm
+      soma_v1 <- soma_v1 + v1[i] * custo_v1
+      soma_v2 <- soma_v2 + v2[i] * custo_v2
+      soma_v3 <- soma_v3 + v3[i] * custo_v3
     }
     
   }
@@ -217,7 +214,7 @@ printeval <- function(s) {
   output <- c(output,cat("\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n"))
   output <- c(output,cat("Lucro Final: R$", total_profit, "\n"))
   output <- c(output,cat("Recursos:  ", resources, "\n"))
-  paste(output,"\n")
+  finoutput <- paste(output,"\n")
   
-  return(total_profit)
+  return(finoutput)
 }

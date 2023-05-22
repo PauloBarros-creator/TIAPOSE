@@ -1,15 +1,14 @@
 # Predict_Function.R
 
 library(rminer) # access rminer functions -> CasesSeries, fit, lforecast, mmetric, mgraph, ...
-library(openxlsx)
+#library(openxlsx)
 
 
 predict_ksvm_stella <- function() {
   
   # read data:
-  d1=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-  #d1=db
-  
+  #d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+  d1=db
   d1 = d1$STELLA
   d1 <- head(d1, - 14) # Remove last 14 lines - too many zeroes
   
@@ -18,7 +17,6 @@ predict_ksvm_stella <- function() {
   
   Test=K # H, the number of multi-ahead steps, adjust if needed
   S=round(K/3) # step jump: set in this case to 2 days
-  print(S)
   Runs=20 # number of growing window iterations, adjust if needed
   
   # forecast:
@@ -35,7 +33,7 @@ predict_ksvm_stella <- function() {
   for(b in 1:Runs)  # cycle of the incremental window training (growing window)
   {
     H=holdout(D$y,ratio=Test,mode="incremental",iter=b,window=W2,increment=S)   
-    
+  
     # code for rminer package methods, "ksvm:
     # note: the last training value is the same for dtr, namely:
     # print(dtr[length(dtr)])  
@@ -44,16 +42,14 @@ predict_ksvm_stella <- function() {
     Pred=lforecast(M,D,start=(length(H$tr)+1),Test) # multi-step ahead forecasts
     #ev15[b]=mmetric(y=d1[H$ts],x=Pred,metric="NMAE",val=YR)
   }
-  print(Pred)
-  return(Pred)
+  return(floor(Pred))
 }
 
 predict_ksvm_bud <- function() {
   
   # read data:
-  d1=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-  #d1=db
-  
+  #d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
+  d1=db
   d1 = d1$BUD
   
   L=length(d1) # size of the time series
@@ -61,7 +57,6 @@ predict_ksvm_bud <- function() {
   
   Test=K # H, the number of multi-ahead steps, adjust if needed
   S=round(K/3) # step jump: set in this case to 2 days
-  print(S)
   Runs=20 # number of growing window iterations, adjust if needed
   
   # forecast:
@@ -87,6 +82,5 @@ predict_ksvm_bud <- function() {
     Pred=lforecast(M,D,start=(length(H$tr)+1),Test) # multi-step ahead forecasts
     #ev15[b]=mmetric(y=d1[H$ts],x=Pred,metric="NMAE",val=YR)
   }
-  print(Pred)
-  return(Pred)
+  return(floor(Pred))
 }

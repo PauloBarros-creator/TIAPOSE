@@ -12,3 +12,6 @@ source("getUpperLimit.R")
 library(openxlsx)
 db=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
 db <- head(db, - 14) # Remove last 14 lines - too many zeroes
+
+# Se desejar executar a interface, descomentar a seguinte linha:
+source('shiny/app.R')

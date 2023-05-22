@@ -17,4 +17,4 @@ N=1000 # number of searches
 lower=rep(0,D)
 upper=getUpperLimit(c(sales_pred1,sales_pred2)) #  upper bounds
 MC=mcsearch(fn=eval,lower=lower,upper=upper,N=N,type="max")
-cat("best solution:",MC$sol,"evaluation function",MC$eval," (found at iteration:",MC$index,")\n")
+cat("Best Solution:",MC$sol,"\n","Evaluation Function:",MC$eval,"(found at iteration:",MC$index,")\n")

@@ -4,8 +4,12 @@
 
 source("eval.R")
 source("repair.R")
-source("teste-predict.R")
+#source("teste-predict.R")
 source("getUpperLimit.R")
+
+
+#sales_pred1 <- c()
+#sales_pred2 <- c()
 
 # UPLOAD DATA
 # install.packages("openxlsx")

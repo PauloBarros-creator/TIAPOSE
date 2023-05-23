@@ -21,8 +21,8 @@ rchange1=function(par,lower,upper) # change for hclimbing
 D=42 # dimension
 lower=rep(0,D) # lower bounds
 #upper=rep(10.4,D) #  upper bounds
-sales_pred1 <- predict_ksvm_stella()
-sales_pred2 <- predict_ksvm_bud()
+sales_pred1 <- ksvm_stella()
+sales_pred2 <- ksvm_bud()
 upper= getUpperLimit(c(sales_pred1,sales_pred2))
 cat("hill climbing search sphere D=",D,"(iters=",N,")\n")
 # initial solution: 

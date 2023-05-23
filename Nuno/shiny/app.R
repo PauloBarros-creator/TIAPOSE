@@ -9,8 +9,8 @@
 #sp <- 0
 
 library(shiny)
-source('ui.R', local = TRUE)
-source('server.R')
+source('shiny/ui.R', local = TRUE)
+source('shiny/server.R')
 
 
 # Run the application 

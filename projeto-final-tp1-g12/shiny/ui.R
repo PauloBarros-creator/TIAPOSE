@@ -19,7 +19,7 @@ my_ui <- fluidPage(
             tags$h3("Escolha do modelo de otimização"),
             selectInput(inputId = "otim_model",
                         label = "Selecione modelo:",
-                        choices = c("Hill Climbing" = "hill", "Monte Carlo" = "mcarlo", "Simulated Annealing" = "sann"),
+                        choices = c("Hill Climbing" = "hill", "Monte Carlo" = "montecarlo", "Simulated Annealing" = "sann"),
                         selected = NULL),
             actionButton("chooseOtim", "Otimizar"),
           ),

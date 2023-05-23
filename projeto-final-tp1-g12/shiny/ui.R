@@ -13,7 +13,7 @@ my_ui <- fluidPage(
             tags$h3("Escolha do modelo de previsão"),
             selectInput(inputId = "pred_model",
                         label = "Selecione modelo:",
-                        choices = c("ksvm" = "ksvm"),
+                        choices = c("ksvm","cubist","lm","mr","plsr","xgboost"),
                         selected = NULL),
             actionButton("choosePred", "Selecionar Modelo"),
             tags$h3("Escolha do modelo de otimização"),
@@ -27,7 +27,6 @@ my_ui <- fluidPage(
           # Show a plot of the generated distribution
           mainPanel(
             verbatimTextOutput(outputId = "output_previsao"),
-            #verbatimTextOutput(outputId = "output_plano"),
             verbatimTextOutput(outputId = "output_otim")
           )
         )

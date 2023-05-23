@@ -1,4 +1,9 @@
 source("pred/univariados.R")
+source("pred/cubist_pred.R")
+source("pred/lm_pred.R")
+source("pred/mr_pred.R")
+source("pred/plsr_pred.R")
+source("pred/xgboost_pred.R")
 
 predict <- function(metodo) {
   

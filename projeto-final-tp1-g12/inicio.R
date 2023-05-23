@@ -18,4 +18,4 @@ db=read.xlsx(xlsxFile="bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,d
 db <- head(db, - 14) # Remove last 14 lines - too many zeroes
 
 # Se desejar executar a interface, descomentar a seguinte linha:
-source('shiny/app.R')
+#source('shiny/app.R')

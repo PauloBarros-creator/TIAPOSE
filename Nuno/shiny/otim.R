@@ -28,6 +28,24 @@ soma_v1 <- 0
 soma_v2 <- 0
 soma_v3 <- 0
 
+# Validation code by ChatGPT
+validate_vectors <- function(v1, v2, v3, v4, v5, v6) {
+  # Check if all vectors have seven elements
+  if (length(v1) != 7 || length(v2) != 7 || length(v3) != 7 ||
+      length(v4) != 7 || length(v5) != 7 || length(v6) != 7) {
+    return(0)
+  }
+  
+  # Check if all values in all vectors are positive
+  if (any(v1 <= 0) || any(v2 <= 0) || any(v3 <= 0) ||
+      any(v4 <= 0) || any(v5 <= 0) || any(v6 <= 0)) {
+    return(0)
+  }
+  
+  # Validation successful
+  return(1)
+}
+
 # Function to repair solution
 repair <- function(s) {
   # splitting code by chatgpt
@@ -39,47 +57,56 @@ repair <- function(s) {
   v2 <- split_s[[5]]
   v3 <- split_s[[6]]
   
-  # calculo dos maximos
-  max_arm <- arm*72
-  max_v <- v1*60 + v2*90 + v3*120
+  validation_status <- validate_vectors(preparadas1, preparadas2, arm, v1, v2, v3)
   
-  #iniciacao das variaveis
-  total_p <- preparadas1 + preparadas2
-  p1_a <- preparadas1
-  p2_a <- preparadas2
-  p1_v <- preparadas1
-  p2_v <- preparadas2
+  if (validation_status == 0) {
+    # Validation failed, return vectors filled with zeros
+    return(list(rep(0, 7), rep(0, 7), rep(0, 7), rep(0, 7), rep(0, 7), rep(0, 7)))
+  } else {
+    # Validation successful, continue
   
-  # verificacao
-  for (i in 1:7) {
+    # calculo dos maximos
+    max_arm <- arm*72
+    max_v <- v1*60 + v2*90 + v3*120
     
-    # arm
-    if (0 <= total_p[i] && max_arm[i] >= total_p[i]) {
-      p1_a[i] <- p1_a[i]
-      p2_a[i] <- p2_a[i]
-    } else {
-      cat("AVISO: Plano com valor ilegal encontrado nos recursos de armazém, no dia ",i,"- A resolver...\n")
-      p1_a[i] <- max_arm[i] / 2
-      p2_a[i] <- max_arm[i] / 2
+    #iniciacao das variaveis
+    total_p <- preparadas1 + preparadas2
+    p1_a <- preparadas1
+    p2_a <- preparadas2
+    p1_v <- preparadas1
+    p2_v <- preparadas2
+    
+    # verificacao
+    for (i in 1:7) {
+      
+      # arm
+      if (0 <= total_p[i] && max_arm[i] >= total_p[i]) {
+        p1_a[i] <- p1_a[i]
+        p2_a[i] <- p2_a[i]
+      } else {
+        cat("AVISO: Plano com valor ilegal encontrado nos recursos de armazém, no dia ",i,"- A resolver...\n")
+        p1_a[i] <- max_arm[i] / 2
+        p2_a[i] <- max_arm[i] / 2
+      }
+      
+      # v
+      if (0 <= total_p[i] && max_v[i] >= total_p[i]) {
+        p1_v[i] <- p1_v[i]
+        p2_v[i] <- p2_v[i]
+      } else {
+        cat("AVISO: Plano com valor ilegal encontrado nos recursos de distribuição, no dia ",i,"- A resolver...\n")
+        p1_v[i] <- max_v[i] / 2
+        p2_v[i] <- max_v[i] / 2
+      }
+      
     }
     
-    # v
-    if (0 <= total_p[i] && max_v[i] >= total_p[i]) {
-      p1_v[i] <- p1_v[i]
-      p2_v[i] <- p2_v[i]
-    } else {
-      cat("AVISO: Plano com valor ilegal encontrado nos recursos de distribuição, no dia ",i,"- A resolver...\n")
-      p1_v[i] <- max_v[i] / 2
-      p2_v[i] <- max_v[i] / 2
-    }
+    # cria o vetor final com o minimo de cada elemento. de maneira a respeitar semrpe as duas
+    p1_f <- pmin(p1_a,p1_v)
+    p2_f <- pmin(p2_a,p2_v)
     
+    return (c(p1_f,p2_f,arm,v1,v2,v3))
   }
-  
-  # cria o vetor final com o minimo de cada elemento. de maneira a respeitar semrpe as duas
-  p1_f <- pmin(p1_a,p1_v)
-  p2_f <- pmin(p2_a,p2_v)
-  
-  return (c(p1_f,p2_f,arm,v1,v2,v3))
 }
 
 # Define function to calculate profit
@@ -185,21 +212,21 @@ eval <- function(s) {
   
   cat("Recursos:  ", resources, "\n")
   
-  #return(total_profit)
+  return(total_profit)
 }
 
 # Usage:
 
-# preparadas1 <- c(160, 8, 0, 52, 20, 0, 0)
-# preparadas2 <- c(200, 200, 0, 0, 30, 0, 0)
-# 
-# 
-# arm <- c(6, 3, 0, 1, 1, 0, 1)
-# 
-# v1 <- c(2, 0, 0, 1, 0, 0, 0)
-# v2 <- c(2, 1, 0, 0, 1, 0, 0)
-# v3 <- c(2, 1, 0, 0, 0, 0, 0)
-# 
-# s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
-# 
-# eval(s)
+preparadas1 <- c(160, 8, 0, 52, 20, 0, 0)
+preparadas2 <- c(200, 200, 0, 0, 30, 0, 0)
+
+
+arm <- c(6, 3, 0, 1, 1, 0, 1)
+
+v1 <- c(2, 0, 0, 1, 0, 0, 0)
+v2 <- c(2, 1, 0, 0, 1, 0, 0)
+v3 <- c(2, 1, 0, 0, 0, 0, 0)
+
+s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
+
+eval(s)

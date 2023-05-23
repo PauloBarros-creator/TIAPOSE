@@ -194,7 +194,7 @@ preparadas1 <- c(160, 8, 0, 52, 20, 0, 0)
 preparadas2 <- c(200, 200, 0, 0, 30, 0, 0)
 
 
-arm <- c(6, 3, 0, 1, 1, 0, 1)
+arm <- c(1, 1, 0, 1, 1, 0, 1)
 
 #arm <- c(1, 1, 0, 1, 1, 0, 1)
 
@@ -204,4 +204,4 @@ v3 <- c(2, 1, 0, 0, 0, 0, 0)
 
 s <- c(preparadas1,preparadas2,arm,v1,v2,v3)
 
-eval(s)
+printeval(s)

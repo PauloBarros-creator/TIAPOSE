@@ -15,7 +15,7 @@ otimizar <- function(metodo,sales_pred1,sales_pred2) {
   
   upper=getUpperLimit(c(sales_pred1,sales_pred2)) # limite superior
   
-  funcao <- function_name <- paste("otim_", metodo, sep = "")
+  funcao <- paste("otim_", metodo, sep = "")
   return(get(funcao)())
 }
 
@@ -41,3 +41,7 @@ otim_montecarlo <- function(upper) {
   printeval(MC$sol)
 }
 
+otim_sann <- function(upper) {
+  
+  
+}

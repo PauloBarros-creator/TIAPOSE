@@ -217,7 +217,7 @@ printeval <- function(s) {
   output <- c(output,cat("\n-     stock bud:",tail(stock2,-1)," > custo: ",sum(stock2),"\n"))
   output <- c(output,cat("Lucro Final: R$", total_profit, "\n"))
   output <- c(output,cat("Recursos:  ", resources, "\n"))
-  paste(output,"\n")
+  output_final <- paste(output,"\n")
   
-  return(total_profit)
+  return(output_final)
 }

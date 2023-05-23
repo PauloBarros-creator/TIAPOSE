@@ -23,7 +23,7 @@ my_server <- function(input, output) {
   
   # print da previsao obtida
   result <- eventReactive(input$choosePred, {
-    predict(input$pred_model)
+    predict(input$pred-model)
   })
   
   output$output_previsao <- renderText({

@@ -29,6 +29,9 @@ cubist_stella <- function() {
     M8=fit(y~.,D[H$tr,],model="cubist") # create forecasting model
     PredR8=lforecast(M8,D,start=(length(H$tr)+1),Test) # multi-step ahead forecasts
     #ev8[b]=mmetric(y=d1[H$ts],x=PredR8,metric="NMAE",val=YR)
+    # mgraph(Y,Pred,graph="REG",Grid=10,col=c("black","blue"),leg=list(pos="topleft",leg=c("target","ksvm pred.")))
+    # cat("MAE:",mmetric(Y,Pred4,metric="MAE"),"\n")
+    # mpause() # press enter
   }
   return(floor(PredR8))
 }

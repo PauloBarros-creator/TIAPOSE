@@ -26,8 +26,12 @@ my_ui <- fluidPage(
           
           # Show a plot of the generated distribution
           mainPanel(
-            verbatimTextOutput(outputId = "output_previsao"),
-            verbatimTextOutput(outputId = "output_otim")
+            shinycssloaders::withSpinner(
+              verbatimTextOutput(outputId = "output_previsao")
+            ),
+            shinycssloaders::withSpinner(
+              verbatimTextOutput(outputId = "output_otim")
+            )
           )
         )
     )

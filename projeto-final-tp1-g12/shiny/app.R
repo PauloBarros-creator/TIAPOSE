@@ -8,7 +8,12 @@
 #
 #sp <- 0
 
+# you might have to install:
+# install.packages("shinycssloaders")
+
 library(shiny)
+library(shinycssloaders)
+
 source('shiny/ui.R', local = TRUE)
 source('shiny/server.R')
 

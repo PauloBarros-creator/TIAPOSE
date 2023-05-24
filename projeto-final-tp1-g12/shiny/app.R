@@ -9,7 +9,7 @@
 #sp <- 0
 
 # you might have to install:
-# install.packages("shinycssloaders")
+#install.packages("shinycssloaders")
 
 library(shiny)
 library(shinycssloaders)
@@ -23,3 +23,4 @@ shinyApp(
   ui = my_ui,
   server = my_server
 )
+

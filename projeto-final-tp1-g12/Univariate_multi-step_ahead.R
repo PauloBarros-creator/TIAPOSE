@@ -11,11 +11,14 @@ TS=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPO
 
 #TS = TS$STELLA
 TS = TS$BUD
+print(TS)
 summary(TS)
 K=7 # TS period (weekly!)
 print("show graph")
 tsdisplay(TS)
 mpause()
+srange=diff(range(TS))
+print(srange)
 
 L=length(TS)
 NTS=K # number of predictions
@@ -125,9 +128,9 @@ LD=nrow(d) # note: LD < L
 hd=holdout(d$y,ratio=NTS,mode="order")
 
 # ----------//----------//----------//----------//----------
-# linear regression modeling ("mlpe"), via rminer:
+# linear regression modeling ("randomforest"), via rminer:
 print("model> mlpe (with t-1,t-2,t-3,t-4,t-5,t-6,t-7 -> t lags)")
-NN2=fit(y~.,d[hd$tr,],model="mlpe")
+NN2=fit(y~.,d[hd$tr,],model="rvm")
 # multi-step, from 1 to H ahead forecasts:
 init=hd$ts[1] # or same as: init=LD-H+1
 # for multi-step ahead prediction, the lforecast from rminer should be used instead of predict,

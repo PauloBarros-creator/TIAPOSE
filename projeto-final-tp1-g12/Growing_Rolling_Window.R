@@ -9,10 +9,10 @@ library(openxlsx)
 # read data:
 cat("read beer time series:")
 d1=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-d1 <- head(d1, - 14) # Remove last 14 lines - too many zeroes
+#d1 <- head(d1, - 14) # Remove last 14 lines - too many zeroes
 
-d1 = d1$STELLA
-#d1 = d1$BUD
+#d1 = d1$STELLA
+d1 = d1$BUD
 summary(d1)
 
 L=length(d1) # size of the time series
@@ -162,12 +162,12 @@ for(b in 1:Runs)  # cycle of the incremental window training (growing window)
       "TS from:",H$ts[1],"to:",H$ts[length(H$ts)],"size:",length(H$ts),
       "nmae:",ev2[b],",",ev6[b],",",ev7[b],",",ev8[b],",",ev9[b],",",ev22[b],"\n")
   
-  mgraph(d1[H$ts],Pred2,graph="REG",Grid=10,col=c("black","blue", "green", "purple", "red", "brown","grey"),leg=list(pos="topleft",leg=c("target","lm", "mlpe", "xgboost", "cubist", "mars", "naive")))
+  mgraph(d1[H$ts],Pred2,graph="REG",Grid=10,col=c("black","blue", "green", "purple", "red", "brown","orange"),leg=list(pos="topleft",leg=c("target","lm", "mlpe", "xgboost", "cubist", "mars", "naive")))
   lines(Pred6,pch=19,cex=0.5,type="b",col="green")
   lines(Pred7,pch=19,cex=0.5,type="b",col="purple")
   lines(Pred8,pch=19,cex=0.5,type="b",col="red")
   lines(Pred9,pch=19,cex=0.5,type="b",col="brown")
-  lines(Pred22,pch=19,cex=0.5,type="b",col="grey")
+  lines(Pred22,pch=19,cex=0.5,type="b",col="orange")
   
   mpause() # wait for enter
 }
@@ -228,14 +228,15 @@ for(b in 1:Runs)  # cycle of the incremental window training (growing window)
   cat("iter:",b,"TR from:",trinit,"to:",(trinit+length(H$tr)-1),"size:",length(H$tr),
       "TS from:",H$ts[1],"to:",H$ts[length(H$ts)],"size:",length(H$ts),
       "nmae:",ev10[b],",",ev11[b],",",ev12[b],",",ev13[b],",",ev14[b],",",ev15[b],"\n")
-  
-  mgraph(d1[H$ts],Pred10,graph="REG",Grid=10,col=c("black","blue", "purple", "red", "brown", "grey","pink"),leg=list(pos="topleft",leg=c("target","rvm", "mr", "pcr", "plsr", "cppls", "ksvm")))
+  print(Pred13)
+  mgraph(d1[H$ts],Pred10,graph="REG",Grid=10,col=c("black","blue", "purple", "red", "brown", "green","orange"),leg=list(pos="topleft",leg=c("target","rvm", "mr", "pcr", "plsr", "cppls", "ksvm")))
   lines(Pred11,pch=19,cex=0.5,type="b",col="purple")
   lines(Pred12,pch=19,cex=0.5,type="b",col="red")
   lines(Pred13,pch=19,cex=0.5,type="b",col="brown")
-  lines(Pred14,pch=19,cex=0.5,type="b",col="grey")
-  lines(Pred15,pch=19,cex=0.5,type="b",col="pink")
+  lines(Pred14,pch=19,cex=0.5,type="b",col="green")
+  lines(Pred15,pch=19,cex=0.5,type="b",col="orange")
   mpause() # wait for enter
+  #aquiiiiiiiiiiiiiiii
 }
 
 # growing window to rminer models part 3:
@@ -295,11 +296,11 @@ for(b in 1:Runs)  # cycle of the incremental window training (growing window)
       "TS from:",H$ts[1],"to:",H$ts[length(H$ts)],"size:",length(H$ts),
       "nmae:",ev16[b],",",ev17[b],",",ev18[b],",",ev19[b],",",ev20[b],",",ev21[b],"\n")
   
-  mgraph(d1[H$ts],Pred16,graph="REG",Grid=10,col=c("black","blue", "purple", "red", "brown", "grey", "pink"),leg=list(pos="topleft",leg=c("target", "mlp", "ctree", "dt", "knn", "cv.glmnet", "randomForest")))
+  mgraph(d1[H$ts],Pred16,graph="REG",Grid=10,col=c("black","blue", "purple", "red", "brown", "green", "pink"),leg=list(pos="topleft",leg=c("target", "mlp", "ctree", "dt", "knn", "cv.glmnet", "randomForest")))
   lines(Pred17,pch=19,cex=0.5,type="b",col="purple")
   lines(Pred18,pch=19,cex=0.5,type="b",col="red")
   lines(Pred19,pch=19,cex=0.5,type="b",col="brown")
-  lines(Pred20,pch=19,cex=0.5,type="b",col="grey")
+  lines(Pred20,pch=19,cex=0.5,type="b",col="green")
   lines(Pred21,pch=19,cex=0.5,type="b",col="pink")
   
   mpause() # wait for enter
@@ -548,12 +549,12 @@ cat("randomForest median NMAE:",median(ev21),"\n")
 cat("naive median NMAE:",median(ev22),"\n")
 
 # last iteration predictions part 1:
-mgraph(d1[H$ts],PredR2,graph="REG",Grid=10,col=c("black","blue", "green", "purple", "red", "brown", "orange","grey"),leg=list(pos="topleft",leg=c("target","lm", "mlpe", "xgboost", "cubist", "mars", "naive")))
+mgraph(d1[H$ts],PredR2,graph="REG",Grid=10,col=c("black","blue", "green", "purple", "red", "brown", "orange","orange"),leg=list(pos="topleft",leg=c("target","lm", "mlpe", "xgboost", "cubist", "mars", "naive")))
 lines(PredR6,pch=19,cex=0.5,type="b",col="green")
 lines(PredR7,pch=19,cex=0.5,type="b",col="purple")
 lines(PredR8,pch=19,cex=0.5,type="b",col="red")
 lines(PredR9,pch=19,cex=0.5,type="b",col="brown")
-lines(PredR22,pch=19,cex=0.5,type="b",col="grey")
+lines(PredR22,pch=19,cex=0.5,type="b",col="orange")
 
 # last iteration predictions part 2:
 mgraph(d1[H$ts],PredR10,graph="REG",Grid=10,col=c("black","blue", "green", "purple", "red", "brown", "orange"),leg=list(pos="topleft",leg=c("target","rvm", "mr", "pcr", "plsr", "cppls", "ksvm")))

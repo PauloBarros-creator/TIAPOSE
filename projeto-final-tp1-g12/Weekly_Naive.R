@@ -6,10 +6,10 @@ library(forecast)
 
 cat("read beer time series:")
 TS=read.xlsx(xlsxFile="C:/Users/paulo/OneDrive/Ambiente de Trabalho/Uminho/TIAPOSE/TIAPOSE/bebidas.xlsx",sheet=1,skipEmptyRows=FALSE,colNames=TRUE,detectDates=TRUE)
-#TS <- head(TS, - 14) # Remove last 14 lines - too many zeroes
+TS <- head(TS, - 14) # Remove last 14 lines - too many zeroes
 
-#TS = TS$STELLA
-TS = TS$BUD
+TS = TS$STELLA
+#TS = TS$BUD
 summary(TS)
 K=7 # TS period (weekly!)
 
@@ -34,4 +34,5 @@ print(ultima_semana)
 Y=TS[(LTR+1):L]
 print(Y)
 
+mgraph(Y,TR,graph="REG",Grid=10,col=c("black","blue"),leg=list(pos="topleft",leg=c("target","Weekly Naive")))
 cat("NMAE:",mmetric(Y,ultima_semana,metric="NMAE"),"\n")
